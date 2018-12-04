@@ -1,0 +1,1 @@
+<h1>secured route</h1>
