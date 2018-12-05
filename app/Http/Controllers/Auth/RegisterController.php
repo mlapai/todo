@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
+use Symfony\Component\Intl\Intl;
 
 class RegisterController extends Controller
 {
@@ -40,6 +42,13 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm()
+    {
+        $countries = Intl::getRegionBundle()->getCountryNames();
+
+        return view('auth.register', array('countries' => $countries));
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -48,11 +57,17 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
+        return Validator::make(
+            $data,
+            [
+                'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name'  => ['required', 'string', 'max:255'],
+                'company'    => ['required', 'string', 'max:255'],
+                'country'    => ['required', 'string', 'max:255', Rule::in(Intl::getRegionBundle()->getCountryNames())],
+                'password'   => ['required', 'string', 'min:6', 'confirmed'],
+            ]
+        );
     }
 
     /**
@@ -63,10 +78,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return User::create(
+            [
+                'email'      => $data['email'],
+                'first_name' => $data['first_name'],
+                'last_name'  => $data['last_name'],
+                'company'    => $data['company'],
+                'country'    => $data['country'],
+                'password'   => Hash::make($data['password']),
+            ]
+        );
     }
 }

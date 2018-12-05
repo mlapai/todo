@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'Home\HomeController@index');
-Route::get('/secured', 'Home\HomeController@secured')->middleware('auth');
-Route::get('/login', function () {
-    echo 'login page';
-})->name('login');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
