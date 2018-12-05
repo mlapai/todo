@@ -20,13 +20,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'first_name',
         'last_name',
         'company',
-        'country_id'
+        'country'
     ];
 
     /**
@@ -37,12 +36,4 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function country()
-    {
-        return $this->belongsTo('App\Models\Country');
-    }
 }
