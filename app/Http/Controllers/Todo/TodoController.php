@@ -33,7 +33,7 @@ class TodoController extends Controller
             )
         );
 
-        return response()->json(array($todo), Response::HTTP_CREATED);
+        return response()->json($todo, Response::HTTP_CREATED);
     }
 
     /**
@@ -46,7 +46,7 @@ class TodoController extends Controller
         $request->validated();
         $todo->update($request->all());
 
-        return response()->json(array($todo), Response::HTTP_OK);
+        return response()->json($todo, Response::HTTP_OK);
     }
 
     /**
@@ -55,11 +55,11 @@ class TodoController extends Controller
      */
     public function get(Todo $todo)
     {
-        return \response()->json(array($todo), Response::HTTP_OK);
+        return \response()->json($todo, Response::HTTP_OK);
     }
 
     public function cget()
     {
-        return \response()->json(array(Todo::all()), Response::HTTP_OK);
+        return \response()->json(Todo::all(), Response::HTTP_OK);
     }
 }
